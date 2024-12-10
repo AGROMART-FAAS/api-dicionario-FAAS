@@ -11,20 +11,34 @@
 #
 # Happy Coding!
 
-service: lambda-architecture
+service: api-dicionario-FAAS
 
 plugins:
+    - serverless-dynamodb
     - serverless-offline
 
 custom:
     stage: ${opt:stage, self:provider.stage}
-    # Set our DynamoDB throughput for prod and all other non-prod stages.
-    tableThroughputs:
-        prod: 5
-        default: 1
-    tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
-
+    region: ${opt:region, 'us-east-1'}
     environment: ${self:custom.stage}
+    tableThroughputs:
+        prod: 1
+        default: 1
+    dynamodb:
+        port: 8000
+        inMemory: true
+        migrate: true
+        convertEmptyValues: true
+    serverless-dynamodb:
+        stages:
+            - dev
+        tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+        start:
+            port: ${self:custom.dynamodb.port}
+            inMemory: ${self:custom.dynamodb.inMemory}
+            migrate: ${self:custom.dynamodb.migrate}
+            convertEmptyValues: ${self:custom.dynamodb.convertEmptyValues}
+            enableLogs: true
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -32,9 +46,9 @@ custom:
 
 provider:
     name: aws
-    runtime: nodejs8.10
+    runtime: nodejs18.x
     stage: dev
-    region: sa-east-1
+    timeout: 30
 
     environment:
         tableName: CsaTable
@@ -48,7 +62,7 @@ provider:
               - dynamodb:PutItem
               - dynamodb:UpdateItem
               - dynamodb:DeleteItem
-          Resource: "arn:aws:dynamodb:sa-east-1:*:*"
+          Resource: "arn:aws:dynamodb:us-east-1:*:*"
 
 functions:
     obter:
@@ -84,42 +98,9 @@ resources:
                 AttributeDefinitions:
                     - AttributeName: id
                       AttributeType: S
-                    - AttributeName: nomeCSA
-                      AttributeType: S
-                    - AttributeName: responsavelCSA
-                      AttributeType: S
-                    - AttributeName: emailCSA
-                      AttributeType: S
-                    - AttributeName: urlBase
-                      AttributeType: S
                 KeySchema:
                     - AttributeName: id
                       KeyType: HASH
-                GlobalSecondaryIndexes:
-                    - IndexName: NomeIndex
-                      KeySchema:
-                          - AttributeName: nomeCSA
-                            KeyType: HASH
-                      Projection:
-                          ProjectionType: ALL
-                    - IndexName: ResponsavelIndex
-                      KeySchema:
-                          - AttributeName: responsavelCSA
-                            KeyType: HASH
-                      Projection:
-                          ProjectionType: ALL
-                    - IndexName: EmailIndex
-                      KeySchema:
-                          - AttributeName: emailCSA
-                            KeyType: HASH
-                      Projection:
-                          ProjectionType: ALL
-                    - IndexName: UrlBaseIndex
-                      KeySchema:
-                          - AttributeName: urlBase
-                            KeyType: HASH
-                      Projection:
-                          ProjectionType: ALL
                 ProvisionedThroughput:
                     ReadCapacityUnits: 5
                     WriteCapacityUnits: 5

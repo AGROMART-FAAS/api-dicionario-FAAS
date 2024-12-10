@@ -57,22 +57,28 @@ module.exports.getcsaById = async (event, context) => {
 
 module.exports.createCsa = async (event, context) => {
     const data = JSON.parse(event.body);
-    if (!data || !data.content) {
+    if (
+        !data.nomeCSA ||
+        !data.responsavelCSA ||
+        !data.emailCSA ||
+        !data.urlBase
+    ) {
         return {
             statusCode: 400,
             body: JSON.stringify({
-                message: "Conteúdo deve ser informado",
+                error: "Todos os campos obrigatórios devem ser preenchidos.",
             }),
         };
     }
 
     return repo
-        .createCsa(data.content)
+        .createCsa(data)
         .then((data) => {
             return {
                 statusCode: 200,
                 body: JSON.stringify({
                     message: "cadastrado com sucesso",
+                    data: data,
                 }),
             };
         })

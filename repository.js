@@ -1,5 +1,5 @@
 "use strict";
-// const uuidv1 = require("uuid/v1");
+const { v4: uuidv4 } = require("uuid");
 const TABLE_NAME = "CsaTable";
 const dynamoDbLib = require("./dynamodb-lib");
 
@@ -22,7 +22,11 @@ const createCsa = function (content) {
     return dynamoDbLib.call("put", {
         TableName: TABLE_NAME,
         Item: {
-            content: content,
+            id: uuidv4(),
+            nomeCSA: content.nomeCSA,
+            responsavelCSA: content.responsavelCSA,
+            emailCSA: content.emailCSA,
+            urlBase: content.urlBase,
         },
     });
 };

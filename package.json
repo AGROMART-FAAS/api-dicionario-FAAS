@@ -1,0 +1,23 @@
+{
+    "name": "api-dicionario-faas",
+    "version": "1.0.0",
+    "description": "Project for ft UnB final work",
+    "repository": {
+        "type": "git"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "serverless": "^4.4.14",
+        "serverless-dynamodb": "^0.2.56",
+        "serverless-offline": "^14.3.4"
+    },
+    "dependencies": {
+        "aws-sdk": "^2.1692.0",
+        "uuid": "^11.0.3"
+    }
+}

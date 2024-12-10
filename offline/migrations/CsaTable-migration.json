@@ -1,0 +1,37 @@
+{
+    "Table": {
+        "TableName": "CsaTable",
+        "KeySchema": [
+            {
+                "AttributeName": "id",
+                "KeyType": "HASH"
+            }
+        ],
+        "AttributeDefinitions": [
+            {
+                "AttributeName": "id",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "nomeCSA",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "responsavelCSA",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "emailCSA",
+                "AttributeType": "S"
+            },
+            {
+                "AttributeName": "urlBase",
+                "AttributeType": "S"
+            }
+        ],
+        "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+        }
+    }
+}
