@@ -1,4 +1,4 @@
-node >= 16.20.2
+node >= 18.00.0
 
 npm install
 
