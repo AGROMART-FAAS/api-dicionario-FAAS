@@ -6,4 +6,4 @@ configurar banco de dados: -> sls dynamodb install
 
 iniciar banco de dados: -> sls dynamodb start
 
-serverless offline start
+rodar a api no modo offline (localmente): ->  serverless offline
